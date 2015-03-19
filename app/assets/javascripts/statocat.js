@@ -1,55 +1,47 @@
 Chart.defaults.global.animation = false;
+Chart.defaults.global.responsive = true;
 
 $(document).on("page:change", function() {
 
     if ($(".username").text().trim() != "") {
         
-        // Repos
-        /*$.ajax({
+        // Get user's statistics and create charts!
+        $.ajax({
             method: "get",
-            url: document.URL + "/repo-languages",
+            url: document.URL + "/statistics",
             dataType: "json",
             success: function(data) {
 
+                // Grab JSON arrays from data
+                var repoData = data.repo;
+                var codeData = data.code;
+
+                // Create repo languages chart
                 var repoLanguagesData = [];
-                
-                for (var i = 0; i < Object.keys(data).length; i++) {
+                for (var i = 0; i < Object.keys(repoData).length; i++) {
                     repoLanguagesData.push({
-                        value: data[Object.keys(data)[i]],
-                        color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
-                        label: Object.keys(data)[i]
+                        value: repoData[Object.keys(repoData)[i]],
+                        color: githubLangs[Object.keys(repoData)[i]],
+                        label: Object.keys(repoData)[i]
                     });
                 }
                 var repoLanguagesCanvas = $(".repo-languages").get(0).getContext("2d");
-
                 var repoLanguagesChart = new Chart(repoLanguagesCanvas).Pie(repoLanguagesData);
 
-            }
-        })
-
-        // Languages
-        $.ajax({
-            method: "get",
-            url: document.URL + "/code-languages",
-            dataType: "json",
-            success: function(data) {
-                
+                // Create code languages chart
                 var codeLanguagesData = [];
-
-                for (var i = 0; i < Object.keys(data).length; i++) {
+                for (var i = 0; i < Object.keys(codeData).length; i++) {
                     codeLanguagesData.push({
-                        value: data[Object.keys(data)[i]],
-                        color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
-                        label: Object.keys(data)[i]
+                        value: codeData[Object.keys(codeData)[i]],
+                        color: githubLangs[Object.keys(codeData)[i]],
+                        label: Object.keys(codeData)[i]
                     });
                 }
-
                 var codeLanguagesCanvas = $(".code-languages").get(0).getContext("2d");
-
                 var codeLanguagesChart = new Chart(codeLanguagesCanvas).Pie(codeLanguagesData);
 
             }
-        })*/
+        });
 
     }
 
