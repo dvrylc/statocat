@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  username: MyString
+  followers: 
+  following: 
+  join_date: 2015-03-19 09:54:20
+  public_repos: 
+  public_gists: 
+
+two:
+  name: MyString
+  username: MyString
+  followers: 
+  following: 
+  join_date: 2015-03-19 09:54:20
+  public_repos: 
+  public_gists: 

@@ -5,7 +5,7 @@ $(document).on("page:change", function() {
     if ($(".username").text().trim() != "") {
         
         // Repos
-        $.ajax({
+        /*$.ajax({
             method: "get",
             url: document.URL + "/repo-languages",
             dataType: "json",
@@ -31,6 +31,7 @@ $(document).on("page:change", function() {
         $.ajax({
             method: "get",
             url: document.URL + "/code-languages",
+            dataType: "json",
             success: function(data) {
                 
                 var codeLanguagesData = [];
@@ -48,7 +49,7 @@ $(document).on("page:change", function() {
                 var codeLanguagesChart = new Chart(codeLanguagesCanvas).Pie(codeLanguagesData);
 
             }
-        })
+        })*/
 
     }
 
