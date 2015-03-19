@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="content">
+        <div class="row">
+            
+            <div class="col-xs-12 col-sm-4 text-center">
+                <img class="img-responsive img-circle user-avatar" src="<%= @user_profile["avatar_url"] %>">
+                <h1>
+                    <%= @user_profile["name"] %>
+                </h1>
+                <h4 class="username">
+                    <%= @user_profile["login"] %>
+                </h4>
+                <p>
+                    <strong><%= @user_profile["followers"] %></strong> followers &middot;
+                    <strong><%= @user_profile["following"] %></strong> following
+                </p>
+                <p>
+                    <strong><%= @user_profile["public_repos"] %></strong> public repos &middot;
+                    <strong><%= @user_profile["public_gists"] %></strong> public gists
+                </p>
+                <p>
+                    Joined GitHub on <strong><%= @user_profile["created_at"].to_time.to_formatted_s(:long_ordinal) %></strong>
+                </p>
+            </div>
+
+            <div class="col-xs-12 col-sm-8">
+                
+                <h1>Languages</h1><hr>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <canvas class="repo-languages"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <canvas class="code-languages"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

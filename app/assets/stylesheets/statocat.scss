@@ -1,0 +1,28 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    background-image: radial-gradient(at top right, white, #A8DBA8, #0B486B);
+    background-attachment: fixed; 
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+.content {
+    margin-top: 5%;
+    padding: 25px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+
+.user-avatar {
+    width: 50%;
+    max-width: 300px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
