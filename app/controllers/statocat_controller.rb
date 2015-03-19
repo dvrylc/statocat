@@ -35,7 +35,7 @@ class StatocatController < ApplicationController
             # We don't want stats for forks
             if repo["fork"] == false && repo["language"] != nil
 
-                # Add/append the language to the @user_repos hash
+                # Add/append the language to the @user_repo_languages hash
                 language = repo["language"]
                 if @user_repo_languages.has_key?(language)
                     @user_repo_languages[language] = @user_repo_languages[language] + 1
@@ -71,7 +71,7 @@ class StatocatController < ApplicationController
                 repo_languages_raw = HTTParty.get(repo["languages_url"] + AUTH)
                 repo_languages = JSON.parse(repo_languages_raw.body)
 
-                # If valid languages exist, add/append to hash
+                # If valid languages exist, add/append to the @user_code_languages hash
                 if !repo_languages.empty?
                     repo_languages.each do |lang, size| 
                         if @user_code_languages.has_key?(lang)
