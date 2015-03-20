@@ -46,7 +46,7 @@ class UsersController < ApplicationController
             @statistic.save
 
         # If statistic object in database is older than 2 mins
-        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > 5
+        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > -1
 
             # Update user's statistic object and save
             user_set_statistics(@statistic)
@@ -100,7 +100,7 @@ class UsersController < ApplicationController
         # Get username from params hash
         username = params[:username]
 
-        # Create temporary repo_lang and code_lang hashes
+        # Create temporary variables
         temp_repo_lang = { }
         temp_code_lang = { }
         temp_total_stars = 0
@@ -109,6 +109,8 @@ class UsersController < ApplicationController
         temp_average_forks = 0.00
         temp_total_characters = 0
         temp_average_characters = 0.00
+        temp_total_watchers = 0
+        temp_average_watchers = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
@@ -159,6 +161,10 @@ class UsersController < ApplicationController
                 temp_total_forks += repo["forks_count"]
                 statistic.total_forks = temp_total_forks
 
+                # total_watchers
+                temp_total_watchers += repo["watchers_count"]
+                statistic.total_watchers = temp_total_watchers
+
             end
 
         end
@@ -170,6 +176,10 @@ class UsersController < ApplicationController
         # average_forks
         temp_average_forks = temp_total_forks.to_f / repos_raw.size
         statistic.average_forks = temp_average_forks
+
+        # average_watchers
+        temp_average_watchers = temp_total_watchers.to_f / repos_raw.size
+        statistic.average_watchers = temp_average_watchers
 
         # average characters
         temp_average_characters = temp_total_characters.to_f / repos_raw.size

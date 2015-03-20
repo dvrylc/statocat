@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320054844) do
+ActiveRecord::Schema.define(version: 20150320055422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20150320054844) do
     t.float    "average_forks",      default: 0.0
     t.integer  "total_characters",   default: 0
     t.float    "average_characters", default: 0.0
+    t.integer  "total_watchers",     default: 0
+    t.float    "average_watchers",   default: 0.0
   end
 
   add_index "user_statistics", ["user_id"], name: "index_user_statistics_on_user_id", using: :btree
