@@ -113,6 +113,8 @@ class UsersController < ApplicationController
         temp_average_watchers = 0.00
         temp_total_wikis = 0
         temp_percentage_wikis = 0.00
+        temp_total_issues = 0
+        temp_average_issues = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
@@ -173,6 +175,10 @@ class UsersController < ApplicationController
                 end
                 statistic.total_wikis = temp_total_wikis
 
+                # total_issues
+                temp_total_issues += repo["open_issues_count"]
+                statistic.total_issues = temp_total_issues
+
             end
 
         end
@@ -192,6 +198,10 @@ class UsersController < ApplicationController
         # percentage_wikis
         temp_percentage_wikis = temp_total_wikis.to_f / repos_raw.size
         statistic.percentage_wikis = temp_percentage_wikis.round(2)
+
+        # average_issues
+        temp_average_issues = temp_total_issues.to_f / repos_raw.size
+        statistic.average_issues = temp_average_issues.round(2)
 
         # average characters
         temp_average_characters = temp_total_characters.to_f / repos_raw.size
