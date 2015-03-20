@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320045852) do
+ActiveRecord::Schema.define(version: 20150320053617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,11 +20,13 @@ ActiveRecord::Schema.define(version: 20150320045852) do
     t.integer  "user_id"
     t.json     "repo_lang"
     t.json     "code_lang"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "total_stars",   default: 0
     t.integer  "total_repos",   default: 0
-    t.float    "average_stars"
+    t.float    "average_stars", default: 0.0
+    t.integer  "total_forks",   default: 0
+    t.float    "average_forks", default: 0.0
   end
 
   add_index "user_statistics", ["user_id"], name: "index_user_statistics_on_user_id", using: :btree

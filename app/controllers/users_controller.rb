@@ -46,7 +46,7 @@ class UsersController < ApplicationController
             @statistic.save
 
         # If statistic object in database is older than 2 mins
-        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > 2
+        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > 5
 
             # Update user's statistic object and save
             user_set_statistics(@statistic)
@@ -105,6 +105,8 @@ class UsersController < ApplicationController
         temp_code_lang = { }
         temp_total_stars = 0
         temp_average_stars = 0.00
+        temp_total_forks = 0
+        temp_average_forks = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
@@ -149,6 +151,10 @@ class UsersController < ApplicationController
                 temp_total_stars += repo["stargazers_count"]
                 statistic.total_stars = temp_total_stars
 
+                # total_forks
+                temp_total_forks += repo["forks_count"]
+                statistic.total_forks = temp_total_forks
+
             end
 
         end
@@ -156,6 +162,10 @@ class UsersController < ApplicationController
         # average_stars
         temp_average_stars = temp_total_stars.to_f / repos_raw.size
         statistic.average_stars = temp_average_stars
+
+        # average_forks
+        temp_average_forks = temp_total_forks.to_f / repos_raw.size
+        statistic.average_forks = temp_average_forks
 
     end
 
