@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-    has_one :language
+    has_one :user_statistic
 end

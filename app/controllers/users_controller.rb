@@ -13,8 +13,8 @@ class UsersController < ApplicationController
     # User profile
     def profile
 
-        # If user profile in database is older than 10 mins
-        if ((Time.now - @user.updated_at) / 1.minute).round > 30
+        # If user profile in database is older than 2 mins
+        if ((Time.now - @user.updated_at) / 1.minute).round > 2
             puts Time.now
             # Update user profile parameters, save
             user_set_profile(@user)
@@ -31,32 +31,32 @@ class UsersController < ApplicationController
         # Get username from params hash
         username = params[:username]
 
-        # Look for user's language object
-        @language = @user.language
+        # Look for user's statistic object
+        @statistic = @user.user_statistic
 
-        # If user's language object cannot be found
-        if @language == nil
+        # If user's statistic object cannot be found
+        if @statistic == nil
 
-            # Create a new language object, bind it to the user
-            @language = Language.new
-            @user.language = @language
+            # Create a new statistic object, bind it to the user
+            @statistic = UserStatistic.new
+            @user.user_statistic = @statistic
 
-            # Set language object's params and save
-            user_set_statistics(@language)
-            @language.save
+            # Set statistic object's params and save
+            user_set_statistics(@statistic)
+            @statistic.save
 
-        # If language object in database is older than 10 mins
-        elsif ((Time.now - @language.updated_at) / 1.minute).round > 30
+        # If statistic object in database is older than 2 mins
+        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > 2
 
-            # Update user's language object and save
-            user_set_statistics(@language)
-            @language.updated_at = Time.now
-            @language.save
+            # Update user's statistic object and save
+            user_set_statistics(@statistic)
+            @statistic.updated_at = Time.now
+            @statistic.save
 
         end
 
-        # Render json of user's repo languages
-        render json: @language.to_json
+        # Render json of user's statistic object
+        render json: @statistic.to_json
 
     end
 
@@ -95,51 +95,67 @@ class UsersController < ApplicationController
 
     end
 
-    def user_set_statistics(language)
+    def user_set_statistics(statistic)
 
         # Get username from params hash
         username = params[:username]
 
-        # Create new temp_repo hash
-        temp_repo = { }
-        temp_code = { }
+        # Create temporary repo_lang and code_lang hashes
+        temp_repo_lang = { }
+        temp_code_lang = { }
+        temp_total_stars = 0
+        temp_average_stars = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
 
+        # total_repos
+        statistic.total_repos = repos_raw.size
+
+        # For each repo
         repos_raw.each do |repo| 
 
             # We don't want stats for forks
-            if repo["fork"] == false && repo["language"] != nil
+            if repo["fork"] == false
 
-                # Add/append the language to the temp_repo hash
-                lang = repo["language"]
-                if temp_repo.has_key?(lang)
-                    temp_repo[lang] = temp_repo[lang] + 1
-                else 
-                     temp_repo[lang] = 1
+                # repo_lang
+                if repo["language"] != nil
+                    # Add/append the language to the temp_repo_lang hash
+                    lang = repo["language"]
+                    if temp_repo_lang.has_key?(lang)
+                        temp_repo_lang[lang] = temp_repo_lang[lang] + 1
+                    else 
+                         temp_repo_lang[lang] = 1
+                    end
                 end
+                statistic.repo_lang = temp_repo_lang.to_json
 
+                # code_lang
                 # Get this repo's languages, parse response into repo_languages_raw hash
                 repo_languages_raw = JSON.parse(HTTParty.get(repo["languages_url"] + AUTH).body)
-
-                # If valid languages exist, add/append to the temp_code hash
+                # If valid languages exist, add/append to the temp_code_lang hash
                 if !repo_languages_raw.empty?
                     repo_languages_raw.each do |lang, size| 
-                        if temp_code.has_key?(lang)
-                            temp_code[lang] = temp_code[lang] + size
+                        if temp_code_lang.has_key?(lang)
+                            temp_code_lang[lang] = temp_code_lang[lang] + size
                         else
-                            temp_code[lang] = size
+                            temp_code_lang[lang] = size
                         end
                     end
                 end
+                statistic.code_lang = temp_code_lang.to_json
+
+                # total_stars
+                temp_total_stars += repo["stargazers_count"]
+                statistic.total_stars = temp_total_stars
 
             end
 
         end
 
-        language.repo = temp_repo.to_json
-        language.code = temp_code.to_json
+        # average_stars
+        temp_average_stars = temp_total_stars.to_f / repos_raw.size
+        statistic.average_stars = temp_average_stars
 
     end
 

@@ -13,8 +13,8 @@ $(document).on("page:change", function() {
             success: function(data) {
 
                 // Grab JSON arrays from data
-                var repoData = data.repo;
-                var codeData = data.code;
+                var repoData = data.repo_lang;
+                var codeData = data.code_lang;
 
                 // Create repo languages chart
                 var repoLanguagesData = [];
@@ -27,6 +27,7 @@ $(document).on("page:change", function() {
                 }
                 var repoLanguagesCanvas = $(".repo-languages").get(0).getContext("2d");
                 var repoLanguagesChart = new Chart(repoLanguagesCanvas).Pie(repoLanguagesData);
+                $(".repo-languages-label").text("");
 
                 // Create code languages chart
                 var codeLanguagesData = [];
