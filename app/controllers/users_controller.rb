@@ -46,7 +46,7 @@ class UsersController < ApplicationController
             @statistic.save
 
         # If statistic object in database is older than 2 mins
-        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > -1
+        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > 2
 
             # Update user's statistic object and save
             user_set_statistics(@statistic)
@@ -111,6 +111,8 @@ class UsersController < ApplicationController
         temp_average_characters = 0.00
         temp_total_watchers = 0
         temp_average_watchers = 0.00
+        temp_total_wikis = 0
+        temp_percentage_wikis = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
@@ -165,25 +167,35 @@ class UsersController < ApplicationController
                 temp_total_watchers += repo["watchers_count"]
                 statistic.total_watchers = temp_total_watchers
 
+                # total_wikis
+                if repo["has_wiki"] == true 
+                    temp_total_wikis += 1
+                end
+                statistic.total_wikis = temp_total_wikis
+
             end
 
         end
 
         # average_stars
         temp_average_stars = temp_total_stars.to_f / repos_raw.size
-        statistic.average_stars = temp_average_stars
+        statistic.average_stars = temp_average_stars.round(2)
 
         # average_forks
         temp_average_forks = temp_total_forks.to_f / repos_raw.size
-        statistic.average_forks = temp_average_forks
+        statistic.average_forks = temp_average_forks.round(2)
 
         # average_watchers
         temp_average_watchers = temp_total_watchers.to_f / repos_raw.size
-        statistic.average_watchers = temp_average_watchers
+        statistic.average_watchers = temp_average_watchers.round(2)
+
+        # percentage_wikis
+        temp_percentage_wikis = temp_total_wikis.to_f / repos_raw.size
+        statistic.percentage_wikis = temp_percentage_wikis.round(2)
 
         # average characters
         temp_average_characters = temp_total_characters.to_f / repos_raw.size
-        statistic.average_characters = temp_average_characters
+        statistic.average_characters = temp_average_characters.round(2)
 
     end
 
