@@ -107,6 +107,8 @@ class UsersController < ApplicationController
         temp_average_stars = 0.00
         temp_total_forks = 0
         temp_average_forks = 0.00
+        temp_total_characters = 0
+        temp_average_characters = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
@@ -135,7 +137,7 @@ class UsersController < ApplicationController
                 # code_lang
                 # Get this repo's languages, parse response into repo_languages_raw hash
                 repo_languages_raw = JSON.parse(HTTParty.get(repo["languages_url"] + AUTH).body)
-                # If valid languages exist, add/append to the temp_code_lang hash
+                # If valid languages exist, add/append to the temp_code_lang and temp_total_characters hash
                 if !repo_languages_raw.empty?
                     repo_languages_raw.each do |lang, size| 
                         if temp_code_lang.has_key?(lang)
@@ -143,9 +145,11 @@ class UsersController < ApplicationController
                         else
                             temp_code_lang[lang] = size
                         end
+                        temp_total_characters += size
                     end
                 end
                 statistic.code_lang = temp_code_lang.to_json
+                statistic.total_characters = temp_total_characters
 
                 # total_stars
                 temp_total_stars += repo["stargazers_count"]
@@ -166,6 +170,10 @@ class UsersController < ApplicationController
         # average_forks
         temp_average_forks = temp_total_forks.to_f / repos_raw.size
         statistic.average_forks = temp_average_forks
+
+        # average characters
+        temp_average_characters = temp_total_characters.to_f / repos_raw.size
+        statistic.average_characters = temp_average_characters
 
     end
 
