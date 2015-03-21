@@ -10,6 +10,9 @@ gem 'bootstrap-sass', '~> 3.3.4'
 gem 'httparty', '~> 0.13.3'
 gem 'puma'
 
+gem 'rails_12factor', group: :production
+ruby "2.2.0"
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.0'
 
