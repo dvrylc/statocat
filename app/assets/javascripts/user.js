@@ -13,8 +13,8 @@ function lineFormatter(num) {
 
 /* Utility functions */
 function colorGenerator(key) {
-    if (githubLangs[key]["color"])
-        return githubLangs[key]["color"]
+    if (githubLangs[key])
+        return githubLangs[key]
     else 
         return "#666";
 }
