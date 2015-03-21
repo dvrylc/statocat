@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :find_user
+    before_action :find_user, except: [:root, :invalid]
 
     # Get GitHub secrets fron environment
     GITHUB_ID = Rails.application.secrets.GITHUB_ID
@@ -10,17 +10,25 @@ class UsersController < ApplicationController
     def root
     end
 
+    def invalid
+    end
+
     # User profile
     def profile
 
-        # If user profile in database is older than 2 mins
-        if ((Time.now - @user.updated_at) / 1.minute).round > 2
+        # If user profile in database is older than 12 hours
+        if ((Time.now - @user.updated_at) / 1.hour).round > 12
             puts Time.now
             # Update user profile parameters, save
             user_set_profile(@user)
             @user.updated_at = Time.now
             @user.save
 
+        end
+
+        respond_to do |format|
+        	format.html {}
+        	format.json { render json: @user, except: [:id, :created_at] }
         end
 
     end
@@ -45,8 +53,8 @@ class UsersController < ApplicationController
             user_set_statistics(@statistic)
             @statistic.save
 
-        # If statistic object in database is older than 2 mins
-        elsif ((Time.now - @statistic.updated_at) / 1.minute).round > 2
+        # If statistic object in database is older than 12 hours
+        elsif ((Time.now - @statistic.updated_at) / 1.hour).round > 12
 
             # Update user's statistic object and save
             user_set_statistics(@statistic)
@@ -56,7 +64,7 @@ class UsersController < ApplicationController
         end
 
         # Render json of user's statistic object
-        render json: @statistic.to_json
+        render json: @statistic, except: [:id, :user_id, :created_at]
 
     end
 
@@ -65,7 +73,7 @@ class UsersController < ApplicationController
         # Get username from params hash
         username = params[:username]
 
-        @user = User.find_by_username(username)
+        @user = User.where('lower(username) = ?', username.downcase).first
 
         if @user == nil
             # Create new user profile
@@ -84,14 +92,20 @@ class UsersController < ApplicationController
 
         user_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + AUTH).body)
 
-        user.avatar = user_raw["avatar_url"]
-        user.name = user_raw["name"]
-        user.username = user_raw["login"].downcase
-        user.followers = user_raw["followers"]
-        user.following = user_raw["following"]
-        user.join_date = user_raw["created_at"]
-        user.public_repos = user_raw["public_repos"]
-        user.public_gists = user_raw["public_gists"]
+        if user_raw["login"] != nil
+
+            user.avatar = user_raw["avatar_url"]
+            user.name = user_raw["name"]
+            user.username = user_raw["login"]
+            user.followers = user_raw["followers"]
+            user.following = user_raw["following"]
+            user.join_date = user_raw["created_at"]
+            user.public_repos = user_raw["public_repos"]
+            user.public_gists = user_raw["public_gists"]
+
+        else 
+            redirect_to invalid_path
+        end
 
     end
 
@@ -109,12 +123,10 @@ class UsersController < ApplicationController
         temp_average_forks = 0.00
         temp_total_characters = 0
         temp_average_characters = 0.00
-        temp_total_watchers = 0
-        temp_average_watchers = 0.00
-        temp_total_wikis = 0
-        temp_percentage_wikis = 0.00
         temp_total_issues = 0
         temp_average_issues = 0.00
+        temp_total_pages = 0
+        temp_percentage_pages = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
         repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
@@ -165,19 +177,15 @@ class UsersController < ApplicationController
                 temp_total_forks += repo["forks_count"]
                 statistic.total_forks = temp_total_forks
 
-                # total_watchers
-                temp_total_watchers += repo["watchers_count"]
-                statistic.total_watchers = temp_total_watchers
-
-                # total_wikis
-                if repo["has_wiki"] == true 
-                    temp_total_wikis += 1
-                end
-                statistic.total_wikis = temp_total_wikis
-
                 # total_issues
                 temp_total_issues += repo["open_issues_count"]
                 statistic.total_issues = temp_total_issues
+
+                # total_pages
+                if repo["has_pages"] == true 
+                    temp_total_pages += 1
+                end
+                statistic.total_pages = temp_total_pages
 
             end
 
@@ -191,17 +199,13 @@ class UsersController < ApplicationController
         temp_average_forks = temp_total_forks.to_f / repos_raw.size
         statistic.average_forks = temp_average_forks.round(2)
 
-        # average_watchers
-        temp_average_watchers = temp_total_watchers.to_f / repos_raw.size
-        statistic.average_watchers = temp_average_watchers.round(2)
-
-        # percentage_wikis
-        temp_percentage_wikis = temp_total_wikis.to_f / repos_raw.size
-        statistic.percentage_wikis = temp_percentage_wikis.round(2)
-
         # average_issues
         temp_average_issues = temp_total_issues.to_f / repos_raw.size
         statistic.average_issues = temp_average_issues.round(2)
+
+        # percentage_pages
+        temp_percentage_pages = temp_total_pages.to_f / repos_raw.size 
+        statistic.percentage_pages = temp_percentage_pages.round(2)
 
         # average characters
         temp_average_characters = temp_total_characters.to_f / repos_raw.size

@@ -21,24 +21,91 @@
                 <p>
                     Joined GitHub on <strong><%= @user.join_date.to_time.to_formatted_s(:long_ordinal) %></strong>
                 </p>
+                <p>
+                    <%= link_to "https://github.com/" + @user.username, target: "_blank" do %><span class="octicon octicon-mark-github"></span><% end %>
+                </p>
             </div>
 
             <div class="col-xs-12 col-sm-8">
-                
-                <h2>Languages</h2><hr>
+
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="canvas-container">
-                            <canvas class="repo-languages"></canvas>
+                    <div class="col-xs-12">
+                        <div class="loading" id="spin">
                         </div>
-                        <h4 class="repo-languages-label text-center"></h4>
+                        <p class="text-center loading-message"><em>must be your first time here?<br>hold up while we fetch your data!</em></p>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="canvas-container">
-                            <canvas class="code-languages"></canvas>
-                        </div>
-                        <p class="text-center">bytes of code per lang</p>
+                </div>
+                
+                <div class="row statistics">
+
+                    <div class="col-xs-12 col-md-6 repo-languages">
+                        <h3><span class="mega-octicon octicon-repo"></span> Repo languages</h3><hr>
+                        <div class="chart"></div>
+                        <p class="lang-label"></p>
                     </div>
+
+                    <div class="col-xs-12 col-md-6 code-languages">
+                        <h3><span class="mega-octicon octicon-file-code"></span> Code languages</h3><hr>
+                        <div class="chart"></div>
+                        <p class="lang-label"></p>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 stars">
+                        <h3><span class="mega-octicon octicon-star"></span> Stars</h3><hr>
+                        <table class="table">
+                            <tr>
+                                <th>Total</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Average per repo</th>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 forks">
+                        <h3><span class="mega-octicon octicon-repo-forked"></span> Forks</h3><hr>
+                        <table class="table">
+                            <tr>
+                                <th>Total</th>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <th>Average per repo</th>
+                                <td>x</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 pages">
+                        <h3><span class="mega-octicon octicon-file-text"></span> Pages</h3><hr>
+                        <table class="table">
+                            <tr>
+                                <th>Total</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Percentage of repos with pages</th>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 issues">
+                        <h3><span class="mega-octicon octicon-issue-opened"></span> Issues</h3><hr>
+                        <table class="table">
+                            <tr>
+                                <th>Total</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Average per repo</th>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
 
             </div>
