@@ -6,7 +6,7 @@ statocat - Stats for the octocat's home!
 ## Features
 **statocat** provides the following information given a GitHub user's username:
 
-- General Information
+- **General Information**
   - Name
   - Username
   - Followers
@@ -15,26 +15,30 @@ statocat - Stats for the octocat's home!
   - Public gists
   - GitHub 'Birthday'
 
-- Repo Languages (Pie Chart & Text)
+- **Repo Languages _(Pie Chart & Text)_**
   - Number of repositories
   - Percentage of all repositories
 
-- Code Languages (Pie Chart & Text)
+- **Code Languages _(Pie Chart & Text)_**
   - Number of characters
   - Number of lines
  
-- Stars
+- **Stars**
   - Total stars
   - Average per repo
 
-- Forks
+- **Forks**
   - Total forks
   - Average per repo
 
-- Pages
+- **Pages**
   - Total pages
   - Percentage of repos with pages
 
-- Issues
+- **Issues**
   - Total issues
   - Average number of issues per repository
+
+## API Endpoints
+**statocat** currently has two APIs open for developers to utilize. These APIs are listed below.
+
