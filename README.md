@@ -45,7 +45,7 @@ statocat - Stats for the octocat's home!
 ### `/u/[:user].json` - General information about a user
 - Request:
 ```js
-GET /u/[:user].json
+GET /u/holman.json
 ```
 - Response:
 ```js
@@ -68,7 +68,7 @@ Status: 200 OK
 ### `/u/[:user]/statistics` - Detailed user repo information
 - Request:
 ```js
-GET /u/[:user]/statistics
+GET /u/holman/statistics
 ```
 - Response:
 ```js
