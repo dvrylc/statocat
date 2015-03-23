@@ -1,18 +1,23 @@
 class UsersController < ApplicationController
-    before_action :find_user, except: [:root, :invalid]
+    before_action :find_user, except: [:root, :invalid, :faq]
+    before_action :set_no_nav, only: [:root, :invalid]
 
     # Get GitHub secrets fron environment
     GITHUB_ID = Rails.application.secrets.GITHUB_ID
     GITHUB_SECRET = Rails.application.secrets.GITHUB_SECRET
     AUTH = "?client_id=" + GITHUB_ID + "&client_secret=" + GITHUB_SECRET
 
-    # Methods
+    # Static methods
     def root
     end
 
     def invalid
     end
 
+    def faq
+    end
+
+    # Logic
     # User profile
     def profile
 
@@ -213,6 +218,10 @@ class UsersController < ApplicationController
 
     end
 
-    private :find_user, :user_set_profile, :user_set_statistics
+    def set_no_nav 
+        @no_nav = true
+    end
+
+    private :find_user, :user_set_profile, :user_set_statistics, :set_no_nav
 
 end

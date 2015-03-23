@@ -116,6 +116,11 @@ $(document).on("page:change", function() {
     ga('create', 'UA-61019072-1', 'auto');
     ga('send', 'pageview');
 
+    $(".search-input").keyup(function (e) {
+        if (e.keyCode == 13) {
+            window.location.href = "/u/" + $(this).val();
+        }
+    });
 
     if ($(".username").text().trim() != "") {
 
@@ -240,14 +245,6 @@ $(document).on("page:change", function() {
 
                 });
 
-            }
-        });
-
-    } else {
-
-        $(".search-input").keyup(function (e) {
-            if (e.keyCode == 13) {
-                window.location.href = "/u/" + $(this).val();
             }
         });
 

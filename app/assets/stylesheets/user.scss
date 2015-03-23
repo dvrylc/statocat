@@ -5,8 +5,8 @@ html {
 body {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
-    background-image: radial-gradient(at bottom right, white, #A8DBA8, #0B486B);
-    background-attachment: fixed; 
+    background-color: #111d2e;
+    color: #111d2e;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -17,23 +17,46 @@ h4 {
     display: inline-block;
 }
 
-.search {
+input {
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    width: 50%;
+    min-width: 200px;
     text-align: center;
-    font-size: 3em;
-    span {
-        line-height: 160%;
+    &:focus {
+        outline: 0;
     }
-    input {
-        border: 0;
-        border-bottom: 1px solid #ccc;
-        width: 100%;
-        text-align: center;
-        &:focus {
-            outline: 0;
+}
+
+.content, .nav {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(255,255,255,1);
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.nav {
+    margin-bottom: 0;
+    padding: 10px;
+    a {
+        color: inherit;
+        &:hover, &:focus {
+            text-decoration: none;
+            border-bottom: 1px solid #ccc;
         }
     }
-    .right-div {
-        border-right: 1px solid #ccc;
+}
+
+.search {
+    text-align: center;
+    font-size: 1em;
+    @media only screen and (min-width : 768px) {
+        font-size: 1.6em;
+    }
+    @media only screen and (min-width : 992px) {
+        font-size: 2em;
     }
 }
 
@@ -60,25 +83,13 @@ h4 {
     z-index: 0;
 }
 
-.stat-label {
-    line-height: 150%;
-}
-
 .chart {
     height: 300px;
-}
-
-.content {
-    margin-top: 5%;
-    margin-bottom: 5%;
-    padding: 20px;
-    background: rgba(255,255,255,1);
-    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
 }
 
 .user-avatar {
     width: 50%;
     max-width: 300px;
     margin: 0 auto;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
 }

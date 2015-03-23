@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="nav">
+        <div class="row">
+
+            <% if @no_nav %>
+
+                <div class="col-xs-6 text-center">
+                    <strong><%= link_to "statocat", root_path %></strong>
+                </div>
+
+                <div class="col-xs-6 text-center">
+                    <strong><%= link_to "FAQ", faq_path %></strong>
+                </div>
+
+            <% else %>
+
+                <div class="col-xs-6 col-sm-3 text-center">
+                    <strong><%= link_to "statocat", root_path %></strong>
+                </div>
+
+                <div class="col-xs-6 col-sm-3 text-center">
+                    <strong><%= link_to "FAQ", faq_path %></strong>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 text-center">
+                    <%= render "layouts/search" %>
+                </div>
+
+            <% end %>
+
+        </div>
+    </div>
+</div>
