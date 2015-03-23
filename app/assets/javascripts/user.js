@@ -228,12 +228,12 @@ $(document).on("page:change", function() {
                     $(".code-languages p").html(codeLanguagesLabel);
 
                     // Populate stars
-                    $(".stars table td").first().html(data.total_stars);
-                    $(".stars table td").last().html(data.average_stars);
+                    $(".stars table td").first().html(kFormatter(data.total_stars));
+                    $(".stars table td").last().html(kFormatter(data.average_stars));
 
                     // Populate forks
-                    $(".forks table td").first().html(data.total_forks);
-                    $(".forks table td").last().html(data.average_forks);
+                    $(".forks table td").first().html(kFormatter(data.total_forks));
+                    $(".forks table td").last().html(kFormatter(data.average_forks));
 
                     // Populate pages
                     $(".pages table td").first().html(data.total_pages);
