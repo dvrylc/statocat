@@ -58,6 +58,12 @@ input {
     @media only screen and (min-width : 992px) {
         font-size: 2em;
     }
+    a {
+        color: inherit;
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+    }
 }
 
 .error {

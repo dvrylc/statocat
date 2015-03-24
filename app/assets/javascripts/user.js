@@ -106,6 +106,12 @@ function chartHelper(array) {
 
 }
 
+function redirect() {
+    if ($(".search-input").val() != "") {
+        window.location.href = "/u/" + $(".search-input").val();
+    }
+}
+
 $(document).on("page:change", function() {
 
     /* GA */
@@ -118,8 +124,12 @@ $(document).on("page:change", function() {
 
     $(".search-input").keyup(function (e) {
         if (e.keyCode == 13) {
-            window.location.href = "/u/" + $(this).val();
+            redirect();
         }
+    });
+
+    $(".glyphicon-search").click(function() {
+        redirect();
     });
 
     if ($(".username").text().trim() != "") {
