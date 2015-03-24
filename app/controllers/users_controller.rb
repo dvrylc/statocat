@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     def profile
 
         # If user profile in database is older than 1 hour
-        if ((Time.now - @user.updated_at) / 1.hour).round > -1
+        if ((Time.now - @user.updated_at) / 1.hour).round > 1
             puts Time.now
             # Update user profile parameters, save
             user_set_profile(@user)
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
             @statistic.save
 
         # If statistic object in database is older than 1 hour
-        elsif ((Time.now - @statistic.updated_at) / 1.hour).round > -1
+        elsif ((Time.now - @statistic.updated_at) / 1.hour).round > 1
 
             # Update user's statistic object and save
             user_set_statistics(@statistic)
