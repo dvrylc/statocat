@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     def profile
 
         # If user profile in database is older than 1 hour
-        if ((Time.now - @user.updated_at) / 1.hour).round > 1
+        if ((Time.now - @user.updated_at) / 1.hour).round > -1
             puts Time.now
             # Update user profile parameters, save
             user_set_profile(@user)
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
             @statistic.save
 
         # If statistic object in database is older than 1 hour
-        elsif ((Time.now - @statistic.updated_at) / 1.hour).round > 1
+        elsif ((Time.now - @statistic.updated_at) / 1.hour).round > -1
 
             # Update user's statistic object and save
             user_set_statistics(@statistic)
@@ -134,7 +134,7 @@ class UsersController < ApplicationController
         temp_percentage_pages = 0.00
 
         # Call GitHub API, parse response into the repos_raw object
-        repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH).body)
+        repos_raw = JSON.parse(HTTParty.get("https://api.github.com/users/" + username + "/repos" + AUTH + "&per_page=100").body)
 
         # total_repos
         statistic.total_repos = repos_raw.size
@@ -156,7 +156,7 @@ class UsersController < ApplicationController
                     end
                 end
                 statistic.repo_lang = temp_repo_lang.to_json
-
+                
                 # code_lang
                 # Get this repo's languages, parse response into repo_languages_raw hash
                 repo_languages_raw = JSON.parse(HTTParty.get(repo["languages_url"] + AUTH).body)
